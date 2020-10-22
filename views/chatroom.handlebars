@@ -1,0 +1,23 @@
+<h1>chat room</h1>
+<ul id="messages"></ul>
+<form action="">
+    <input id="m" autocomplete="off" />
+    <button>Send</button>
+</form>
+<link rel="stylesheet" href="stylesheets/chatbox.css">
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+        $(function() {
+            var socket = io('/lobby');
+            $('form').submit(function(){
+                socket.emit('chat message', $('#m').val());
+                $('#m').val('');
+                return false;
+            });
+            socket.on("chat message", (message) => {
+                const item = document.createElement("li");
+                item.innerHTML = `${message}`
+                document.querySelector("#messages").appendChild(item)
+            })
+        })
+</script>
